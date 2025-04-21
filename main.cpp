@@ -3,6 +3,7 @@
 #include <cppconn/prepared_statement.h>
 #include <iostream>
 #include <string>
+#include <sstream>
 
 void insertStudent(const std::string& name, int attendance, int unitTest, const std::string& achievements, int mockPractical) {
     double termWork = (attendance * 0.1) + (unitTest * 0.3) + (mockPractical * 0.6);
@@ -39,8 +40,15 @@ int main(int argc, char* argv[]) {
     std::string name = argv[1];
     int attendance = std::stoi(argv[2]);
     int unitTest = std::stoi(argv[3]);
-    std::string achievements = argv[4];
-    int mockPractical = std::stoi(argv[5]);
+
+    std::ostringstream achievementsStream;
+    for (int i = 4; i < argc - 1; ++i) {
+        achievementsStream << argv[i];
+        if (i < argc - 2) achievementsStream << " ";
+    }
+    std::string achievements = achievementsStream.str();
+
+    int mockPractical = std::stoi(argv[argc - 1]);
 
     try {
         insertStudent(name, attendance, unitTest, achievements, mockPractical);
